@@ -1,5 +1,7 @@
 package ammonclegg.java.apprentice.filesorter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -12,26 +14,38 @@ import java.util.List;
  */
 @Service
 public class FileSorterService {
-  private List<String> lines = new LinkedList<>();
+  private static final Logger LOGGER = LoggerFactory.getLogger(FileSorterService.class);
 
-  private void readLines(BufferedReader inputFile) throws IOException {
-    String line = inputFile.readLine();
-    while (line != null) {
-      lines.add(line);
-      line = inputFile.readLine();
+  private List<String> readLines(String inputFileName) {
+    List<String> lines = new LinkedList<>();
+    try(BufferedReader inputFile = new BufferedReader(new FileReader(inputFileName))) {
+      String line = inputFile.readLine();
+      while (line != null) {
+        lines.add(line);
+        line = inputFile.readLine();
+      }
+    }
+    catch(IOException e) {
+      LOGGER.error("Encountered error reading from file.", e);
+    }
+    return lines;
+  }
+
+  private void outputLines(String outputFileName, List<String> lines) {
+    try(BufferedWriter outputFile = new BufferedWriter(new FileWriter(outputFileName, false))) {
+      for(String outputLines: lines) {
+          outputFile.write(outputLines);
+          outputFile.newLine();
+      }
+    }
+    catch(IOException e) {
+      LOGGER.error("Encountered error writing to file.", e);
     }
   }
 
-  private void outputLines(BufferedWriter outputFile) throws IOException {
-    for(String outputLines: lines) {
-      outputFile.write(outputLines);
-      outputFile.newLine();
-    }
-    outputFile.close();
-  }
+  public void sortFile(String inputFileName, String outputFileName, Order ordering) {
 
-  public void sortFile(BufferedReader inputFile, BufferedWriter outputFile, Order ordering) throws IOException {
-    readLines(inputFile);
+    List<String> lines = readLines(inputFileName);
 
     if (Order.REVERSE.equals(ordering)) {
       lines.sort(Collections.reverseOrder());
@@ -40,12 +54,6 @@ public class FileSorterService {
       Collections.sort(lines);
     }
 
-    outputLines(outputFile);
-  }
-
-  public void sortFile(String inputFileName, String outputFileName, Order ordering) throws IOException {
-    BufferedReader inputFile = new BufferedReader(new FileReader(inputFileName));
-    BufferedWriter outputFile = new BufferedWriter(new FileWriter(outputFileName));
-    sortFile(inputFile, outputFile, ordering);
+    outputLines(outputFileName, lines);
   }
 }
