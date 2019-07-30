@@ -49,24 +49,24 @@ public class Student extends Person {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Student student = (Student) o;
-    return age == student.age &&
+    return getAge() == student.getAge() &&
         Double.compare(student.gpa, gpa) == 0 &&
         Objects.equals(id, student.id) &&
-        Objects.equals(name, student.name);
+        Objects.equals(getName(), student.getName());
   }
 
   @Override
   public int hashCode() {
 
-    return Objects.hash(id, name, age, gpa);
+    return Objects.hash(id, getName(), getAge(), gpa);
   }
 
   @Override
   public String toString() {
     return "Student{" +
         "id='" + id + '\'' +
-        ", name='" + name + '\'' +
-        ", age=" + age +
+        ", name='" + getName() + '\'' +
+        ", age=" + getAge() +
         ", gpa=" + gpa +
         '}';
   }

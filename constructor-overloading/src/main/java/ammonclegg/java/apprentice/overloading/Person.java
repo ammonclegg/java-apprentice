@@ -4,8 +4,8 @@ package ammonclegg.java.apprentice.overloading;
  * @author ammonclegg on 10/12/18.
  */
 public class Person {
-  protected String name;
-  protected int age;
+  private String name;
+  private int age;
 
   public Person(int age, String name) {
     this.age = age;
