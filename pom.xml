@@ -82,5 +82,6 @@
     <module>constructor-overloading</module>
     <module>code-sharing</module>
     <module>bad-encapsulation</module>
+    <module>argument-manipulation</module>
   </modules>
 </project>

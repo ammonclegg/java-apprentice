@@ -11,15 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author ammonclegg on 10/12/18.
  */
 
-
-/**
- * @author ammonclegg on 9/7/18.
- */
 @SpringBootApplication
 public class BadEncapsulationApplication implements CommandLineRunner {
   private static final Logger LOGGER = LoggerFactory.getLogger(BadEncapsulationApplication.class);
-
-  private static final String FILENAME = "code-sharing-example";
 
   /**
    * Starts the project up.
