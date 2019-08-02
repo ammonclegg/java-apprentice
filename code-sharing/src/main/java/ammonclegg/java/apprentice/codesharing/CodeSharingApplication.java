@@ -17,6 +17,10 @@ public class CodeSharingApplication implements CommandLineRunner {
   private static final Logger LOGGER = LoggerFactory.getLogger(CodeSharingApplication.class);
 
   private static final String FILENAME = "code-sharing-example";
+  private static final String COMPOSITION_FILENAME = FILENAME + "-composition";
+  private static final String INHERITANCE_FILENAME = FILENAME + "-inheritance";
+  private static final String STATIC_CALLS_FILENAME = FILENAME + "-static-calls";
+
 
   /**
    * Starts the project up.
@@ -32,17 +36,29 @@ public class CodeSharingApplication implements CommandLineRunner {
   public void run(String... args) {
     System.out.println("Writing to files via different mechanisms");
 
-    LineWriter lineWriter = new LineWriter(FILENAME);
-    XMLWriter xmlWriter = new XMLWriter(FILENAME);
+    Writer lineWriterComposition = new LineWriterComposition(COMPOSITION_FILENAME);
+    System.out.println(String.format("Writing message to text file %s.txt", COMPOSITION_FILENAME));
+    writeToFile(lineWriterComposition,"Hello world", "Ammon", "Joe");
 
-    System.out.println(String.format("Writing message to text file %s.txt", FILENAME));
-    writeToFile(lineWriter,"Hello world", "Ammon", "Joe");
+    Writer lineWriterInherited = new LineWriterInherited(INHERITANCE_FILENAME);
+    System.out.println(String.format("Writing message to text file %s.txt", INHERITANCE_FILENAME));
+    writeToFile(lineWriterInherited,"Hello world", "Ammon", "Joe");
 
-    System.out.println(String.format("Writing message to text file %s.xml", FILENAME));
-    writeToFile(xmlWriter,"Hello world too", "Ammon", "Joe");
+    Writer lineWriterStaticCalls = new LineWriterStaticCalls(STATIC_CALLS_FILENAME);
+    System.out.println(String.format("Writing message to text file %s.txt", STATIC_CALLS_FILENAME));
+    writeToFile(lineWriterStaticCalls,"Hello world", "Ammon", "Joe");
 
-    System.out.println(String.format("Wrote out to files %s.txt and %s.xml", FILENAME, FILENAME));
+    Writer xmlWriterComposition = new XMLWriterComposition(COMPOSITION_FILENAME);
+    System.out.println(String.format("Writing message to xml file %s.xml", COMPOSITION_FILENAME));
+    writeToFile(xmlWriterComposition,"Hello world too", "Ammon", "Joe");
 
+    Writer xmlWriterInherited = new XMLWriterInherited(INHERITANCE_FILENAME);
+    System.out.println(String.format("Writing message to text file %s.txt", INHERITANCE_FILENAME));
+    writeToFile(xmlWriterInherited,"Hello world", "Ammon", "Joe");
+
+    Writer xmlWriterStaticCalls = new XMLWriterStaticCalls(STATIC_CALLS_FILENAME);
+    System.out.println(String.format("Writing message to text file %s.txt", STATIC_CALLS_FILENAME));
+    writeToFile(xmlWriterStaticCalls,"Hello world", "Ammon", "Joe");
   }
 
   private void writeToFile(Writer writer, String message, String sender, String recipient) {
